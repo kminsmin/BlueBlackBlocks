@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Option : MonoBehaviour
+public class UIOption : MonoBehaviour
 {
     private bool _isOpen;
     [SerializeField] private Button _openBtn;
