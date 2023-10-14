@@ -40,23 +40,25 @@ public class SoundManager : CustomSingleton<SoundManager>
         if (audioClip == null)
             return;
 
-        if (type == Define.Sound.Bgm)
+        AudioSource audioSource;
+        switch (type)
         {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
-            if (audioSource.isPlaying)
-                audioSource.Stop();
+            case Define.Sound.Bgm:
+                audioSource = _audioSources[(int)Define.Sound.Bgm];
+                if (audioSource.isPlaying)
+                    audioSource.Stop();
 
-            audioSource.pitch = pitch;
-            audioSource.volume = volume;
-            audioSource.clip = audioClip;
-            audioSource.Play();
-        }
-        else
-        {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
-            audioSource.pitch = pitch;
-            audioSource.volume = volume;
-            audioSource.PlayOneShot(audioClip);
+                audioSource.pitch = pitch;
+                audioSource.volume = volume;
+                audioSource.clip = audioClip;
+                audioSource.Play();
+                break;
+            case Define.Sound.Effect:
+                audioSource = _audioSources[(int)Define.Sound.Effect];
+                audioSource.pitch = pitch;
+                audioSource.volume = volume;
+                audioSource.PlayOneShot(audioClip);
+                break;
         }
     }
 
