@@ -88,7 +88,7 @@ public class SoundManager : CustomSingleton<SoundManager>
         return audioClip;
     }
 
-    public void AudioVolumeSetting(Define.Sound type, float volume)
+    public void VolumeSetting(Define.Sound type, float volume)
     {
         switch(type)
         {
