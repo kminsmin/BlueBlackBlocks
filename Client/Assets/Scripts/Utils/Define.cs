@@ -6,4 +6,10 @@ public class Define
         Effect,
         MaxCount
     }
+
+    public enum CharacterColor
+    {
+        Blue,
+        Black
+    }
 }
