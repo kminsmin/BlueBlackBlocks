@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: IntroCutDialogue
   m_EditorClassIdentifier: 
   dialogue:
-  - dummy
   - "\uB4DC\uB514\uC5B4 \uB3C4\uCC29\uC774\uB2E4!!!"
   - "\uC774\uACF3\uC774 \uC2DC\uC791\uC758 \uC12C\uC778\uAC00?"
   - "\uC774\uACF3\uC5D0\uC11C \uC6B0\uB9AC\uC758 \uBAA8\uD5D8\uC774 \uC2DC\uC791\uB418\uB294
