@@ -1,4 +1,22 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const PASSWORD = document.getElementById("AccountPassword")
+const CONFIRM_PASSWORD = document.getElementById("AccountPasswordConfirm");
 
-// Write your JavaScript code.
+function validatePassword() {
+    if (PASSWORD.value != CONFIRM_PASSWORD.value) {
+        CONFIRM_PASSWORD.setCustomValidity("패스워드가 맞지 않습니다.");
+    }
+    else { 
+        CONFIRM_PASSWORD.setCustomValidity('');
+    }
+}
+
+function validateAccountName() {
+    
+}
+
+function init() {
+    PASSWORD.addEventListener("change", validatePassword);
+    CONFIRM_PASSWORD.addEventListener("keyup", validatePassword);
+}
+
+init();

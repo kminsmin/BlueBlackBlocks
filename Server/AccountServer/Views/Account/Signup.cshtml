@@ -1,42 +1,49 @@
-﻿@model AccountServer.DB.AccountDb
+﻿﻿@using Microsoft.AspNetCore.Http
+@model AccountServer.DB.AccountSignupReq
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Sign Up";
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/Signup.css" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Main.css" type="text/css" />
+    <title>@ViewData["Title"] </title>
 </head>
 
-<body>
-    <form class="form-horizontal" method="post" asp-controller="Account" asp-action="Account">
-        <div class="form-group">
-            <label>ID</label>
-            <input type="text" class="form-control" asp-for="Username" placeholder="사용자 ID 입력" />
-            <span class="text-danger" asp-validation-for="Username"></span>
-        </div>
+<html>
+    <body>
+        <main class="signup-main">
+            <div id="signup-logo">
+                <img src="~/image/logo.png" />
+            </div>
+            <form id="signup-form" method="post" asp-controller="Account" asp-action="Signup">
+                <div class="signup-form-group">
+                    <input type="text" class="form-account-name" asp-for="AccountName" placeholder="아이디" minlength="3" maxlength="15" required />
+                </div>
 
-        <div class="form-group">
-            <label>패스워드</label>
-            <input type="password" class="form-control" asp-for="Password" placeholder="사용자 PW 입력" />
-            <span class="text-danger" asp-validation-for="Password"></span>
+                <div class="signup-form-group">
+                    <input type="password" class="form-account-password" asp-for="AccountPassword" placeholder="비밀번호" minlength="3" maxlength="12" required />
+                </div>
 
-        </div>
+                <div class="signup-form-group">
+                    <input type="password" class="form-account-password-confirm" asp-for="AccountPasswordConfirm" placeholder="비밀번호 확인" minlength="3" maxlength="12" required />
+                </div>
 
-        <div class="form-group">
-            <label>닉네임</label>
-            <input type="text" class="form-control" asp-for="Nickname" placeholder="닉네임" />
-            <span class="text-danger" asp-validation-for="Nickname"></span>
+                <div class="signup-form-group">
+                    <span class="signup-form-msg">@ViewData["Message"]</span>
+                </div>
 
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary"> 회원가입</button>
-            <a class="btn btn-warning" href="#"> 취소</a>
-        </div>
-
-    </form>
-</body>
+                <div class="signup-form-group">
+                    <button type="submit" class="signup-btn"> 회원가입</button>
+                </div>
+            </form>
+        </main>
+    <script src="~/js/Signup.js" asp-append-version="true"></script>
+    </body>
+</html>
 
 
 @section Scripts {

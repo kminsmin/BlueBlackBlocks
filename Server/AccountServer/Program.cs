@@ -1,4 +1,6 @@
 using AccountServer.DB;
+using AccountServer.Utils;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountServer
@@ -21,15 +23,15 @@ namespace AccountServer
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddMvc().AddRazorRuntimeCompilation();
-            var app = builder.Build();
 
-        
+            builder.Services.AddSingleton<PasswordEncryptor>();
 
-            // Configure the HTTP request pipeline.
+            WebApplication app = builder.Build();
+
             if (!app.Environment.IsDevelopment())
             {
+
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
