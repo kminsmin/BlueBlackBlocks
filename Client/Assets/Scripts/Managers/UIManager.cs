@@ -7,7 +7,7 @@ public class UIManager : CustomSingleton<UIManager>
 {
     private Dictionary<string, GameObject> _uiList = new Dictionary<string, GameObject>();
 
-    public string[] uiType = { "UIOption", "UIPopUP" };
+    public string[] uiType = { "UIOption", "UIPopUp", "UIStagePanel"};
 
     private void Start()
     {
@@ -27,8 +27,7 @@ public class UIManager : CustomSingleton<UIManager>
         for (int i = 0; i < uiCount; i++)
         {
             var tr = transform.GetChild(i);
-            string name = tr.name.Replace("(Clone)","");
-            _uiList.Add(name, tr.gameObject);
+            _uiList.Add(uiType[i], tr.gameObject);
         }
     }
 
