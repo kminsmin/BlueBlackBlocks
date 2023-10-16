@@ -1,0 +1,95 @@
+.signup-main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fdebd0;
+}
+
+#signup-form {
+    margin-top: 50px;
+    height: 40%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 3px 3px #3f3f3f;
+    background-color: white;
+    padding: 5px 18px 5px 18px;
+}
+
+
+.signup-form-group {
+    margin-bottom: 25px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.signup-form-group input {
+    width: 100%;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.form-account-name::placeholder,
+.form-account-password::placeholder,
+.form-account-password-confirm::placeholder {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-account-name {
+    color: #3598db;
+    border: 2px #3598db solid;
+}
+
+.form-account-name::placeholder {
+    color: #3598db;
+}
+
+.form-account-password {
+    border: 2px #566573 solid;
+}
+
+.form-account-password::placeholder {
+    color: #566573;
+}
+
+.form-account-password-confirm {
+    border: 2px #cd6055 solid;
+}
+
+.form-account-password-confirm::placeholder {
+    color: #cd6055;
+}
+
+.signup-btn {
+    width: 100px;
+    height: 50px;
+    border: 1px #5faf9f;
+    border-radius: 3px;
+    background-color: #71cebc;
+    box-shadow: 2px 2px #0c5e4e;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.signup-form-msg {
+    color: #0c5e4e;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.signup-btn:hover {
+    border: 1px #71cebc;
+    background-color: #5faf9f;
+    cursor: pointer;
+}

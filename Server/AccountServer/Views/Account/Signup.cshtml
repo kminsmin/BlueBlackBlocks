@@ -1,0 +1,51 @@
+﻿﻿@using Microsoft.AspNetCore.Http
+@model AccountServer.DB.AccountSignupReq
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Main.css" type="text/css" />
+    <title>@ViewData["Title"] </title>
+</head>
+
+<html>
+    <body>
+        <main class="signup-main">
+            <div id="signup-logo">
+                <img src="~/image/logo.png" />
+            </div>
+            <form id="signup-form" method="post" asp-controller="Account" asp-action="Signup">
+                <div class="signup-form-group">
+                    <input type="text" class="form-account-name" asp-for="AccountName" placeholder="아이디" minlength="3" maxlength="15" required />
+                </div>
+
+                <div class="signup-form-group">
+                    <input type="password" class="form-account-password" asp-for="AccountPassword" placeholder="비밀번호" minlength="3" maxlength="12" required />
+                </div>
+
+                <div class="signup-form-group">
+                    <input type="password" class="form-account-password-confirm" asp-for="AccountPasswordConfirm" placeholder="비밀번호 확인" minlength="3" maxlength="12" required />
+                </div>
+
+                <div class="signup-form-group">
+                    <span class="signup-form-msg">@ViewData["Message"]</span>
+                </div>
+
+                <div class="signup-form-group">
+                    <button type="submit" class="signup-btn"> 회원가입</button>
+                </div>
+            </form>
+        </main>
+    <script src="~/js/Signup.js" asp-append-version="true"></script>
+    </body>
+</html>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
