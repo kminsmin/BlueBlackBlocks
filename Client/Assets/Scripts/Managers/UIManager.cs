@@ -7,9 +7,9 @@ public class UIManager : CustomSingleton<UIManager>
 {
     private Dictionary<string, GameObject> _uiList = new Dictionary<string, GameObject>();
 
-    public string[] uiType = { "UIOption", "UIPopUp", "UIStagePanel"};
+    public string[] uiType = { "UIOption", "UIPopUp", "UIStagePanel", "UIItem" };
 
-    private void Start()
+    private void Awake()
     {
         foreach (string type in uiType)
         {
