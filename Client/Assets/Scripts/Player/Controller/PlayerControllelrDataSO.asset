@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   gravityStrength: -300
   gravityScale: 30.581038
   fallGravityMult: 5
@@ -22,6 +22,7 @@ MonoBehaviour:
   fastFallGravityMult: 5
   maxFastFallSpeed: 8
   GrounderDistance: 0.013
+  WallDistance: 0.05
   runMaxSpeed: 10
   runAcceleration: 10
   runAccelAmount: 50
