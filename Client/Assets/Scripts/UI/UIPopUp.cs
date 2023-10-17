@@ -32,6 +32,15 @@ public class UIPopUp : MonoBehaviour
 
         OnConfirmY = onConfirmY;
         OnConfirmN = onConfirmN;
+
+        if(onConfirmY == null)
+        {
+            _btnN.gameObject.SetActive(false);
+        }
+        else
+        {
+            _btnN.gameObject.SetActive(true);
+        }
     }
 
     private void ConfirmY()
