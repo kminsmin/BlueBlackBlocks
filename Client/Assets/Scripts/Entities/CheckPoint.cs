@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int _index;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(collision != null)
+        {
+            if(collision.gameObject.CompareTag("Blue")||collision.gameObject.CompareTag("Black"))
+            {
+                if(_index > StageManager.Instance.CurrentCheckPointIndex)
+                {
+                    StageManager.Instance.SetCheckPoint(_index);
+                    gameObject.GetComponent<Animator>().SetBool("isOn", true);
+                }
+            }
+        }
     }
 }

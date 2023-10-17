@@ -11,12 +11,14 @@ public class StageManager : MonoBehaviourPunCallbacks
     public event Action OnBlueDeath;
     public event Action OnBlackDeath;
     public int CurrentCheckPointIndex { get; private set; } = 0;
+    public int CurrentItemsCollected { get; private set; } = 0;
     public UIItem UIItem { get; private set; }
     private GameObject _bluePlayer;
     private GameObject _blackPlayer;
     private Rigidbody2D _playerRigidBody;
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
     [SerializeField] private Transform[] _checkPoints;
+    [SerializeField] private Sprite[] _itemSprites;
     [SerializeField] private float _respawnInterval = 3f; 
     [SerializeField] GameObject _cinemachine;
 
@@ -84,6 +86,17 @@ public class StageManager : MonoBehaviourPunCallbacks
     {
         _blackPlayer.SetActive(false);
         OnBlackDeath?.Invoke();
+    }
+
+    public void SetCheckPoint(int index)
+    {
+        CurrentCheckPointIndex = index;
+    }
+
+    public void CollectItem()
+    {
+        CurrentItemsCollected++;
+        UIItem.SetImage(_itemSprites[CurrentItemsCollected - 1]);
     }
 
     private void InvokeRespawnBlue()
