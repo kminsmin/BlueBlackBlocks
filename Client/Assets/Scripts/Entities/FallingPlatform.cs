@@ -20,6 +20,14 @@ public class FallingPlatform : MonoBehaviour
         _fall = new Vector3(0, -1, 0) * _fallSpeed * Time.deltaTime;
         _initialPos = _transform.position;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(_fall == Vector3.zero)
+        {
+            _fall = new Vector3(0, -1, 0) * _fallSpeed * Time.deltaTime;
+        }
+    }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if(collision != null)

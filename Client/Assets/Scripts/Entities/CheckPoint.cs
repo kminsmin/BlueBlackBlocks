@@ -16,6 +16,10 @@ public class CheckPoint : MonoBehaviour
                     StageManager.Instance.SetCheckPoint(_index);
                     gameObject.GetComponent<Animator>().SetBool("isOn", true);
                 }
+                if(_index ==  StageManager.Instance._checkPoints.Length - 1&& StageManager.Instance.CurrentItemsCollected == 3)
+                {
+                    StageManager.Instance.CallGameClearEvent();
+                }
             }
         }
     }
