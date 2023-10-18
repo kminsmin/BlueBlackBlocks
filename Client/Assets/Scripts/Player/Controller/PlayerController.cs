@@ -20,14 +20,18 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField] private PlayerControllerSO Data;
 
-	#region Variables
+	#region Components
+
 	//Components
 	public Rigidbody2D Rigidbody { get; private set; }
 	public CapsuleCollider2D Collider { get; private set; }
+	public PlayerAnimator AnimHandler { get; private set; }
 	
 	public PlayerInputActions InputActions { get; private set; }
 	public PlayerInputActions.PlayerActions PlayerActions { get; private set; }
+	#endregion
 
+	#region Variables
 	//Variables control the various actions the player can perform at any time.
 	//These are fields which can are public allowing for other sctipts to read them
 	//but can only be privately written to.
@@ -61,6 +65,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Rigidbody = GetComponent<Rigidbody2D>();
 		Collider = GetComponent<CapsuleCollider2D>();
+		AnimHandler = GetComponent<PlayerAnimator>();
 		
 		InputActions = new PlayerInputActions();
 		PlayerActions = InputActions.Player;
@@ -107,18 +112,32 @@ public class PlayerController : MonoBehaviour
 			//Ground Check
 			if ( Physics2D.CapsuleCast(Collider.bounds.center,Collider.size, Collider.direction, 0, Vector2.down, Data.GrounderDistance, _groundLayer) && !IsJumping) //checks if set box overlaps with ground
 			{
+				if(LastOnGroundTime < -0.1f)
+				{
+					AnimHandler.justLanded = true;
+				}
 				LastOnGroundTime = Data.coyoteTime; //if so sets the lastGrounded to coyoteTime
             }		
 
 			//Right Wall Check
-			if (((Physics2D.CapsuleCast(Collider.bounds.center,Collider.size, Collider.direction, 0, Vector2.right, Data.WallDistance, _groundLayer) && IsFacingRight)
-					|| (Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.left, Data.WallDistance, _groundLayer) && !IsFacingRight)) && !IsWallJumping)
+			else if (((Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.right,
+				     Data.WallDistance, _groundLayer) && IsFacingRight)
+			     || (Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.left,
+				     Data.WallDistance, _groundLayer) && !IsFacingRight)) && !IsWallJumping)
+			{
 				LastOnWallRightTime = Data.coyoteTime;
+				AnimHandler.isOnWall = true;
+			}
 
 			//Left Wall Check
-			if (((Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.right, Data.WallDistance, _groundLayer) && !IsFacingRight)
-				|| (Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.left, Data.WallDistance, _groundLayer) && IsFacingRight)) && !IsWallJumping)
+			else if (((Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.right,
+				     Data.WallDistance, _groundLayer) && !IsFacingRight)
+			     || (Physics2D.CapsuleCast(Collider.bounds.center, Collider.size, Collider.direction, 0, Vector2.left,
+				     Data.WallDistance, _groundLayer) && IsFacingRight)) && !IsWallJumping)
+			{
 				LastOnWallLeftTime = Data.coyoteTime;
+				AnimHandler.isOnWall = true;
+			}
 
 			//Two checks needed for both left and right walls since whenever the play turns the wall checkPoints swap sides
 			LastOnWallTime = Mathf.Max(LastOnWallLeftTime, LastOnWallRightTime);
@@ -155,6 +174,9 @@ public class PlayerController : MonoBehaviour
 			_isJumpCut = false;
 			_isJumpFalling = false;
 			Jump();
+			
+			AnimHandler.isOnWall = false;
+			AnimHandler.startedJumping = true;
 		}
 		//WALL JUMP
 		else if (CanWallJump() && LastPressedJumpTime > 0)
@@ -167,6 +189,8 @@ public class PlayerController : MonoBehaviour
 			_lastWallJumpDir = (LastOnWallRightTime > 0) ? -1 : 1;
 			
 			WallJump(_lastWallJumpDir);
+			
+			AnimHandler.isOnWall = false;
 		}
 		#endregion
 
@@ -341,10 +365,11 @@ public class PlayerController : MonoBehaviour
 		LastOnGroundTime = 0;
 		LastOnWallRightTime = 0;
 		LastOnWallLeftTime = 0;
-
+		
 		#region Perform Wall Jump
 		Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
 		force.x *= dir; //apply force in opposite direction of wall
+		Turn();
 
 		if (Mathf.Sign(Rigidbody.velocity.x) != Mathf.Sign(force.x))
 			force.x -= Rigidbody.velocity.x;
