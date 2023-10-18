@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8528683696665488884}
   - component: {fileID: 9104586192634504357}
   - component: {fileID: 5594563114342272751}
+  - component: {fileID: 2581765746992709879}
+  - component: {fileID: 1764360426054106300}
   m_Layer: 5
   m_Name: UILobby
   m_TagString: Untagged
@@ -103,6 +105,36 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2581765746992709879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673333118036775369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb57762a16ea3034eb538da897a8540d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectionPanel: {fileID: 3184529881749593924}
+  JoinRandomRoomPanel: {fileID: 8143777224674078551}
+  InsideRoomPanel: {fileID: 1354589171139680424}
+  StartGameButton: {fileID: 1349812916241400629}
+  PlayerListEntryPrefab: {fileID: 195212, guid: 8c03bdebbf1a5a1478416230642e4ba4, type: 3}
+--- !u!114 &1764360426054106300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673333118036775369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28dd60f6abf16d4094cf0f642a043e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
 --- !u!1 &1354589171139680424
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +362,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2421124580723902290}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
         m_MethodName: OnJoinRandomRoomButtonClicked
         m_Mode: 1
@@ -1192,8 +1224,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4714594516310400579}
   - component: {fileID: 7921943827655857739}
-  - component: {fileID: 2421124580723902290}
-  - component: {fileID: 3252042063809169382}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -1233,36 +1263,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8524465703518606656}
   m_CullTransparentMesh: 1
---- !u!114 &2421124580723902290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524465703518606656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb57762a16ea3034eb538da897a8540d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectionPanel: {fileID: 3184529881749593924}
-  JoinRandomRoomPanel: {fileID: 8143777224674078551}
-  InsideRoomPanel: {fileID: 1354589171139680424}
-  StartGameButton: {fileID: 1349812916241400629}
-  PlayerListEntryPrefab: {fileID: 195212, guid: 8c03bdebbf1a5a1478416230642e4ba4, type: 3}
---- !u!114 &3252042063809169382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524465703518606656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b28dd60f6abf16d4094cf0f642a043e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!1 &8790049533003660940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2421124580723902290}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
         m_MethodName: OnStartGameButtonClicked
         m_Mode: 1
@@ -1541,7 +1541,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2421124580723902290}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
         m_MethodName: OnLeaveGameButtonClicked
         m_Mode: 1
