@@ -209,6 +209,8 @@ public class UILobby : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
         //PhotonNetwork.LoadLevel("");
+
+        gameObject.SetActive(false);
     }
 
     #endregion
