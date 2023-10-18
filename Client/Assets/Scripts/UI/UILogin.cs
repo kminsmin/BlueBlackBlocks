@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,10 +12,14 @@ public class UILogin : MonoBehaviour
     [SerializeField] private TMP_InputField _id;
     [SerializeField] private TMP_InputField _pw;
 
-    private void Start()
+    [SerializeField] private Button _multiBnt;
+
+    private void Awake()
     {
         _signUp.onClick.AddListener(SignUP);
         _signIn.onClick.AddListener(SingIn);
+        _multiBnt.onClick.AddListener(() => gameObject.SetActive(true));
+        gameObject.SetActive(false);
     }
 
     private void SignUP()
@@ -36,7 +41,16 @@ public class UILogin : MonoBehaviour
         }
         else
         {
-            // 로그인 시도
+            // 로그인 테스트
+            PlayerPrefs.SetString("UserID", _id.text);
+
+            PhotonNetwork.LocalPlayer.NickName = PlayerPrefs.GetString("UserID");
+            PhotonNetwork.ConnectUsingSettings();
+
+            UIManager.Instance.OpenUI<UILobby>();
+            _multiBnt.onClick.RemoveAllListeners();
+            _multiBnt.onClick.AddListener(() => UIManager.Instance.OpenUI<UILobby>());
+            gameObject.SetActive(false);
         }
     }
 }
