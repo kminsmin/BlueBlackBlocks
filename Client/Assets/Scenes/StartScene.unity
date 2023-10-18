@@ -5067,7 +5067,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1876095837
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5162,6 +5162,7 @@ MonoBehaviour:
   _signIn: {fileID: 1459259329}
   _id: {fileID: 2134758524}
   _pw: {fileID: 870248459}
+  _multiBnt: {fileID: 814055859}
 --- !u!1 &1907701559
 GameObject:
   m_ObjectHideFlags: 0
@@ -5392,8 +5393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _singleBtn: {fileID: 224105219}
-  _multiBnt: {fileID: 814055859}
-  _loginPanel: {fileID: 1876095836}
 --- !u!50 &1994953694
 Rigidbody2D:
   serializedVersion: 4
