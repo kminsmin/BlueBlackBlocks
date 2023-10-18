@@ -22,10 +22,11 @@ public class StageManager : MonoBehaviourPunCallbacks
     private GameObject _blackPlayer;
     private Rigidbody2D _playerRigidBody;
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
-    [SerializeField] public Transform[] _checkPoints { get; private set; }
+    [SerializeField] public Transform[] CheckPoints;
     [SerializeField] private Sprite[] _itemSprites;
     [SerializeField] private float _respawnInterval = 3f; 
-    [SerializeField] GameObject _cinemachine;
+    [SerializeField] private GameObject _cinemachine;
+    [SerializeField] private GameObject _skipButton;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class StageManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+        UIItem.DelImage();
         _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         _bluePlayer.SetActive(false);
         _blackPlayer.SetActive(false);
@@ -77,7 +79,6 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void StartGame()
     {
-        UIItem.DelImage();
         _bluePlayer.SetActive(true);
         _blackPlayer.SetActive(true);
         _cinemachine.SetActive(false);
@@ -116,6 +117,12 @@ public class StageManager : MonoBehaviourPunCallbacks
         OnGameClear?.Invoke();
     }
 
+    public void SkipCutScene()
+    {
+        StartGame();
+        _skipButton.gameObject.SetActive(false);    
+    }
+
     public void SetCheckPoint(int index)
     {
         CurrentCheckPointIndex = index;
@@ -129,13 +136,13 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void RespawnBlue()
     {
-        _bluePlayer.transform.position = _checkPoints[CurrentCheckPointIndex].position;
+        _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
     }
 
     private void RespawnBlack()
     {
-        _blackPlayer.transform.position = _checkPoints[CurrentCheckPointIndex].position;
+        _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _blackPlayer.gameObject.SetActive(true);
     }
 }
