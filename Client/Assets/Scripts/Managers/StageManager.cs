@@ -4,31 +4,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviourPunCallbacks
 {
     public static StageManager Instance;
     public event Action OnBlueDeath;
     public event Action OnBlackDeath;
+    public event Action OnGameRestart;
+    public event Action OnGameEnd;
+    public event Action OnGameClear;
     public int CurrentCheckPointIndex { get; private set; } = 0;
     public int CurrentItemsCollected { get; private set; } = 0;
     public UIItem UIItem { get; private set; }
+    public UIPopUp UIPopUp { get; private set; }
     private GameObject _bluePlayer;
     private GameObject _blackPlayer;
     private Rigidbody2D _playerRigidBody;
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
-    [SerializeField] private Transform[] _checkPoints;
+    [SerializeField] public Transform[] _checkPoints { get; private set; }
     [SerializeField] private Sprite[] _itemSprites;
     [SerializeField] private float _respawnInterval = 3f; 
     [SerializeField] GameObject _cinemachine;
 
     private void Awake()
     {
+        Time.timeScale = 1.0f;
+        CurrentCheckPointIndex = 0;
+        CurrentItemsCollected = 0;
         Instance = this;
         //TODO: photonView 추가한 플레이어 오브젝트 프리팹화, Resources 폴더에 넣어서 Load 후 Instantiate
-        /*
-         * if(photonView.AmOwner) 아이템 생성 메서드 실행(상황봐서 Start로 옮길 예정)
-         */
         _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
         _blackPlayer = GameObject.FindGameObjectWithTag("Black");
         
@@ -40,8 +45,10 @@ public class StageManager : MonoBehaviourPunCallbacks
         _bluePlayer.SetActive(false);
         _blackPlayer.SetActive(false);
         Invoke("StartGame", 60f);
-        OnBlueDeath += InvokeRespawnBlue;
-        OnBlackDeath += InvokeRespawnBlack;
+        OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
+        OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
+        OnGameRestart += () => SceneManager.LoadScene("GameScene");
+        OnGameEnd += () => SceneManager.LoadScene("StartScene");
     }
 
     private IEnumerator CheckJump(WaitForSeconds checkInterval)
@@ -70,6 +77,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void StartGame()
     {
+        UIItem.DelImage();
         _bluePlayer.SetActive(true);
         _blackPlayer.SetActive(true);
         _cinemachine.SetActive(false);
@@ -79,13 +87,33 @@ public class StageManager : MonoBehaviourPunCallbacks
     public void CallBlueDeathEvent()
     {
         _bluePlayer.SetActive(false);
-        OnBlueDeath?.Invoke();
+        if (!_blackPlayer.activeSelf)
+        {
+            Time.timeScale = 0f;
+            UIPopUp = UIManager.Instance.OpenUI<UIPopUp>();
+            UIPopUp.SetPopup("게임 오버", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
+        }
+        else OnBlueDeath?.Invoke();
     }
 
     public void CallBlackDeathEvent()
     {
         _blackPlayer.SetActive(false);
-        OnBlackDeath?.Invoke();
+        if (!_bluePlayer.activeSelf)
+        {
+            Time.timeScale = 0f;
+            UIPopUp = UIManager.Instance.OpenUI<UIPopUp>();
+            UIPopUp.SetPopup("게임 오버", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
+        }
+        else OnBlackDeath?.Invoke();
+    }
+
+    public void CallGameClearEvent()
+    {
+        Time.timeScale = 0f;
+        UIPopUp = UIManager.Instance.OpenUI<UIPopUp>();
+        UIPopUp.SetPopup("게임 클리어!", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
+        OnGameClear?.Invoke();
     }
 
     public void SetCheckPoint(int index)
@@ -99,20 +127,12 @@ public class StageManager : MonoBehaviourPunCallbacks
         UIItem.SetImage(_itemSprites[CurrentItemsCollected - 1]);
     }
 
-    private void InvokeRespawnBlue()
-    {
-        Invoke("RespawnBlue", _respawnInterval);
-    }
     private void RespawnBlue()
     {
         _bluePlayer.transform.position = _checkPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
     }
 
-    private void InvokeRespawnBlack()
-    {
-        Invoke("RespawnBlack", _respawnInterval);
-    }
     private void RespawnBlack()
     {
         _blackPlayer.transform.position = _checkPoints[CurrentCheckPointIndex].position;
