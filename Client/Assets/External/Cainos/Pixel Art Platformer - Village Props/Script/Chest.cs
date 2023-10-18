@@ -33,5 +33,17 @@ namespace Cainos.PixelArtPlatformer_VillageProps
         {
             IsOpened = false;
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision != null)
+            {
+                if ((collision.gameObject.CompareTag("Blue") || collision.gameObject.CompareTag("Black"))&&!IsOpened)
+                {
+                    IsOpened = true;
+                    StageManager.Instance.CollectItem();
+                }
+            }
+        }
     }
 }

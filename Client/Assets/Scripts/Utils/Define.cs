@@ -12,4 +12,11 @@ public class Define
         Blue,
         Black
     }
+
+    public enum  TrapType
+    {
+        Trap,
+        Blue,
+        Black
+    }
 }
