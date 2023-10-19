@@ -39,7 +39,7 @@ public class StageManager : MonoBehaviourPun, IPunObservable
     void Start()
     {
         UIItem.DelImage();
-        StartGame();
+        photonView.RPC("StartGame", RpcTarget.All);
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
         OnGameRestart += () => PhotonNetwork.LoadLevel("GameScene");
@@ -70,6 +70,7 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         } 
     }
 
+    [PunRPC]
     private void StartGame()
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -77,6 +78,7 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         if (idx == 1)
         {
             prefab.tag = "Blue";
+            prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
             PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
             _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();

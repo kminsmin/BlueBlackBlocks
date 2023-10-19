@@ -1037,13 +1037,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _terrainColliders:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 7876595142211129262}
+  - {fileID: 1461187770320771233}
+  - {fileID: 5742723846685984190}
   CheckPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8732107147733008876}
+  - {fileID: 3917466606756121368}
+  - {fileID: 5066556322392058254}
   _itemSprites:
   - {fileID: 21300000, guid: e9e0645e349225d49a37dd819a89b6db, type: 3}
   - {fileID: 21300000, guid: 06ff645c612ebff40be04024dcdb2a2f, type: 3}
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
