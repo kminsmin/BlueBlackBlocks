@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using Photon.Pun;
 
 public class Trap : MonoBehaviour
 {
@@ -14,23 +15,23 @@ public class Trap : MonoBehaviour
             case TrapType.Trap:
                 if(collision.gameObject.CompareTag("Blue"))
                 {
-                    StageManager.Instance.CallBlueDeathEvent();
+                    StageManager.Instance.photonView.RPC("CallBlueDeathEvent", RpcTarget.All);
                 }
                 else if(collision.gameObject.CompareTag("Black"))
                 {
-                    StageManager.Instance.CallBlackDeathEvent(); 
+                    StageManager.Instance.photonView.RPC("CallBlackDeathEvent", RpcTarget.All);
                 }
                 break;
             case TrapType.Black:
                 if (collision.gameObject.CompareTag("Blue"))
                 {
-                    StageManager.Instance.CallBlueDeathEvent();
+                    StageManager.Instance.photonView.RPC("CallBlueDeathEvent", RpcTarget.All);
                 }
                 break;
             case TrapType.Blue:
                 if (collision.gameObject.CompareTag("Black"))
                 {
-                    StageManager.Instance.CallBlackDeathEvent();
+                    StageManager.Instance.photonView.RPC("CallBlackDeathEvent", RpcTarget.All);
                 }
                 break;
 

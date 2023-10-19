@@ -1235,6 +1235,7 @@ GameObject:
   - component: {fileID: 375764979565603221}
   - component: {fileID: 5742723846685984190}
   - component: {fileID: 5464357502735995518}
+  - component: {fileID: 7315080449866198440}
   m_Layer: 7
   m_Name: Black
   m_TagString: Untagged
@@ -1365,6 +1366,7 @@ GameObject:
   - component: {fileID: 1023072162947790060}
   - component: {fileID: 8658138715060493613}
   - component: {fileID: 8121886468846070337}
+  - component: {fileID: 8658138715060493614}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
@@ -1881,6 +1883,7 @@ GameObject:
   - component: {fileID: 2602065679654917808}
   - component: {fileID: 1461187770320771233}
   - component: {fileID: 66192215815868205}
+  - component: {fileID: 7855810726205596774}
   m_Layer: 7
   m_Name: Blue
   m_TagString: Untagged
@@ -5441,6 +5444,7 @@ GameObject:
   - component: {fileID: 2814379339473992301}
   - component: {fileID: 8265339040125877753}
   - component: {fileID: 415490172933422854}
+  - component: {fileID: 8265339040125877754}
   m_Layer: 0
   m_Name: Switch
   m_TagString: Untagged
@@ -9052,6 +9056,7 @@ GameObject:
   - component: {fileID: 4116303505131383514}
   - component: {fileID: 8661006698603737198}
   - component: {fileID: 2398228834601459185}
+  - component: {fileID: 8661006698603737199}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -29173,6 +29178,28 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &7315080449866198440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98592587366069735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 9
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &7355184307636161034
 Transform:
   m_ObjectHideFlags: 0
@@ -29284,6 +29311,28 @@ Transform:
   m_Father: {fileID: 2590704889707449374}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7855810726205596774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765655012940203995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 8
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!19719996 &7876595142211129262
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -29470,6 +29519,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.96875, y: 1.0625}
   m_EdgeRadius: 0
+--- !u!114 &8265339040125877754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2550025489896099101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &8343000823620970919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29569,6 +29640,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+--- !u!114 &8658138715060493614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408615890935079934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 7
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!483693784 &8661006698603737198
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -29618,6 +29711,28 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!114 &8661006698603737199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4888634799412860968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &8732107147733008876
 Transform:
   m_ObjectHideFlags: 0

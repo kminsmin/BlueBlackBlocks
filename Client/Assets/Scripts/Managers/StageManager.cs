@@ -42,8 +42,8 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         StartGame();
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
-        OnGameRestart += () => SceneManager.LoadScene("GameScene");
-        OnGameEnd += () => SceneManager.LoadScene("StartScene");
+        OnGameRestart += () => PhotonNetwork.LoadLevel("GameScene");
+        OnGameEnd += () => PhotonNetwork.LoadLevel("StartScene");
     }
 
     private IEnumerator CheckJump(WaitForSeconds checkInterval)
@@ -91,6 +91,19 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         }
 
         StartCoroutine(CheckJump(new WaitForSeconds(.05f)));
+    }
+
+    private void RespawnBlue()
+    {
+        _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
+        _bluePlayer.gameObject.SetActive(true);
+    }
+
+
+    private void RespawnBlack()
+    {
+        _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
+        _blackPlayer.gameObject.SetActive(true);
     }
     //---------------------------------- 아래는 전부 서버용
 
@@ -141,21 +154,6 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         CurrentItemsCollected++;
         UIItem.SetImage(_itemSprites[CurrentItemsCollected - 1]);
     }
-
-    [PunRPC]
-    private void RespawnBlue()
-    {
-        _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
-        _bluePlayer.gameObject.SetActive(true);
-    }
-
-    [PunRPC]
-    private void RespawnBlack()
-    {
-        _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
-        _blackPlayer.gameObject.SetActive(true);
-    }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
