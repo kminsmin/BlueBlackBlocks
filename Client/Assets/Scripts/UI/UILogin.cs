@@ -48,8 +48,6 @@ public class UILogin : MonoBehaviour
             WebManager.Instance.SendPostRequest<AccountLoginRes>("account/login", req, res =>
             {
                 newRes = res;
-                Debug.Log(newRes.LoginOk);
-
                 if (newRes.LoginOk == 0)
                 {
                     UIPopUp ui = UIManager.Instance.OpenUI<UIPopUp>();
