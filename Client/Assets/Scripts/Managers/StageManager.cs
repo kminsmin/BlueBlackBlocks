@@ -19,7 +19,7 @@ public class StageManager : MonoBehaviourPun
     public UIPopUp UIPopUp { get; private set; }
     private GameObject _bluePlayer;
     private GameObject _blackPlayer;
-    public Rigidbody2D PlayerRigidBody { get; private set; }
+    private Rigidbody2D _playerRigidBody;
 
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
     [SerializeField] public Transform[] CheckPoints;
@@ -42,7 +42,32 @@ public class StageManager : MonoBehaviourPun
         OnGameRestart += () => PhotonNetwork.LoadLevel("GameScene");
         OnGameEnd += () => PhotonNetwork.LoadLevel("StartScene");
     }
-
+    private IEnumerator CheckJump(WaitForSeconds checkInterval)
+    {
+        while (true)
+        {
+            
+            try
+            {
+                if (_playerRigidBody.velocity.y > 0)
+                {
+                    if (!photonView.IsMine)
+                    { continue; }
+                    foreach (var terrain in _terrainColliders)
+                    {
+                        terrain.enabled = false;
+                    }
+                }
+                else
+                {
+                    foreach (var terrain in _terrainColliders)
+                    { terrain.enabled = true; }
+                }
+            }
+            catch { break; }
+            yield return checkInterval;
+        }
+    }
     private void StartGame()
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -52,29 +77,50 @@ public class StageManager : MonoBehaviourPun
             GameObject prefab = Resources.Load<GameObject>("Player");
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
             photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
-            PlayerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
+            _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
         else if (idx == 2)
         {
             GameObject prefab = Resources.Load<GameObject>("Player_Black");
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
             photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
-            PlayerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+            _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
-
+        //photonView.RPC("InvokeJumpCheck", RpcTarget.All);
+        InvokeJumpCheck();
     }
-
+    [PunRPC]
+    private void InvokeJumpCheck()
+    {
+        if (_playerRigidBody == null)
+        {
+            int idx = PhotonNetwork.LocalPlayer.ActorNumber;
+            if (idx == 1)
+            {
+                _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
+                _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
+            }
+            else if (idx == 2)
+            {
+                _blackPlayer = GameObject.FindGameObjectWithTag("Black");
+                _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+            }
+        }
+        StartCoroutine(CheckJump(new WaitForSeconds(.05f)));
+    }
     [PunRPC]
     private void RespawnBlue()
     {
         _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
+        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
     [PunRPC]
     private void RespawnBlack()
     {
         _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _blackPlayer.gameObject.SetActive(true);
+        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
     //---------------------------------- 아래는 전부 서버용
     [PunRPC]
