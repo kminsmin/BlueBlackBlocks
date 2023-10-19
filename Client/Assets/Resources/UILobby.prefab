@@ -1541,9 +1541,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1764360426054106300}
-        m_TargetAssemblyTypeName: Photon.Pun.UtilityScripts.PlayerNumbering, PhotonUnityNetworking.Utilities
-        m_MethodName: OnLeftRoom
+      - m_Target: {fileID: 2581765746992709879}
+        m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
+        m_MethodName: OnLeaveGameButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
