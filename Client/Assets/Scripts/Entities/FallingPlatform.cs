@@ -21,13 +21,7 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
         _fall = new Vector3(0, -1, 0) * _fallSpeed * Time.deltaTime;
         _initialPos = _transform.position;
     }
-    private void Update()
-    {
-        if (!_isColliding)
-        {
-            _transform.DOLocalMoveY(_initialPos.y, 1f);
-        }
-    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (_fall == Vector3.zero)
@@ -54,6 +48,7 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
             {
                 _isColliding = false;
             }
+            _transform.DOLocalMoveY(_initialPos.y, 1f);
         }
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
