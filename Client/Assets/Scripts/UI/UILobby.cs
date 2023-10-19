@@ -208,7 +208,7 @@ public class UILobby : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        //PhotonNetwork.LoadLevel("");
+        PhotonNetwork.LoadLevel("IntroScene");
 
         gameObject.SetActive(false);
     }
