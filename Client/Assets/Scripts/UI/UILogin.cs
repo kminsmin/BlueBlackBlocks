@@ -24,7 +24,7 @@ public class UILogin : MonoBehaviour
 
     private void SignUP()
     {
-        Application.OpenURL("http://naver.com");
+        Application.OpenURL("http://116.43.139.10/account/signup");
     }
 
     private void SingIn()
@@ -42,15 +42,35 @@ public class UILogin : MonoBehaviour
         else
         {
             // 로그인 테스트
-            PlayerPrefs.SetString("UserID", _id.text);
 
-            PhotonNetwork.LocalPlayer.NickName = PlayerPrefs.GetString("UserID");
-            PhotonNetwork.ConnectUsingSettings();
+            AccountLoginReq req = new AccountLoginReq() { AccountName = _id.text, AccountPassword = _pw.text };
+            AccountLoginRes newRes = null;
+            WebManager.Instance.SendPostRequest<AccountLoginRes>("account/login", req, res =>
+            {
+                newRes = res;
+                Debug.Log(newRes.LoginOk);
 
-            UIManager.Instance.OpenUI<UILobby>();
-            _multiBnt.onClick.RemoveAllListeners();
-            _multiBnt.onClick.AddListener(() => UIManager.Instance.OpenUI<UILobby>());
-            gameObject.SetActive(false);
+                if (newRes.LoginOk == 0)
+                {
+                    UIPopUp ui = UIManager.Instance.OpenUI<UIPopUp>();
+                    ui.SetPopup("로그인 실패", "아이디 또는 비밀번호를 확인해 주세요.", null);
+                }
+                else if (newRes.LoginOk == 1)
+                {
+                    PlayerPrefs.SetString("UserID", _id.text);
+
+                    PhotonNetwork.LocalPlayer.NickName = PlayerPrefs.GetString("UserID");
+                    PhotonNetwork.ConnectUsingSettings();
+
+                    UIManager.Instance.OpenUI<UILobby>();
+                    _multiBnt.onClick.RemoveAllListeners();
+                    _multiBnt.onClick.AddListener(() => UIManager.Instance.OpenUI<UILobby>());
+                    gameObject.SetActive(false);
+                }
+            });
+
+
+
         }
     }
 }

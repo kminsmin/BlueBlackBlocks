@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class WebManager : CustomSingleton<WebManager>
 {
-    public string BaseUrl { get; set; } = "http://116.43.139.10";
+    public string BaseUrl { get; set; } = "https://localhost:7074/";
 
     public void SendPostRequest<T>(string url, object obj, Action<T> res)
     {
