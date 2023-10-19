@@ -1,6 +1,5 @@
 using AccountServer.DB;
 using AccountServer.Utils;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountServer
@@ -20,6 +19,12 @@ namespace AccountServer
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseMySQL(connectionString));
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddMvc().AddRazorRuntimeCompilation();
