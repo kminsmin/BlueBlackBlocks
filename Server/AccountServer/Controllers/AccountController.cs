@@ -74,7 +74,7 @@ namespace AccountServer.Controllers
 
             if (account != null)
             {
-                string reqPassword =req.AccountName;
+                string reqPassword =req.AccountPassword;
                 string accountPassword = account.AccountPassword;
                 if (_passwordEncryptor.IsmatchPassword(reqPassword, accountPassword))
                 {
