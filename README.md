@@ -59,6 +59,19 @@
 
 <br/>
 
+
+# 아키텍처(Architecture)
+
+<img src="https://github.com/kminsmin/BlueBlackBlocks/assets/70641418/cc4fe75e-4c30-4635-8b07-fa11cd5f9933">
+
+- 클라이언트(유니티)에서 ASP.NET Core 웹 애플리케이션으로 Request를 보내고 Response를 받습니다.
+- nginx를 프록시 역할을 통해 8080포트로 접근하면 5000포트를 사용하고 있는 ASP.NET Core 앱에 패킷을 전송합니다.
+- ASP.NET Core에 전송된 패킷 데이터를 바탕으로 MySQL DB에서 데이터를 조회, 삽입, 수정을 합니다.
+- Ubuntu는 여분의 컴퓨터에 서버용 컴퓨터를 세팅했습니다.
+  - 포트포워딩을 통해 8080 포트를 열어놨습니다.
+
+<br/>
+
 # 문제에 대한 고민과 해결 과정
 
 
