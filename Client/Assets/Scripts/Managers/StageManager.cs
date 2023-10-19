@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
-public class StageManager : MonoBehaviourPunCallbacks
+public class StageManager : MonoBehaviourPun, IPunObservable
 {
     public static StageManager Instance;
     public event Action OnBlueDeath;
@@ -25,8 +25,6 @@ public class StageManager : MonoBehaviourPunCallbacks
     [SerializeField] public Transform[] CheckPoints;
     [SerializeField] private Sprite[] _itemSprites;
     [SerializeField] private float _respawnInterval = 3f; 
-    [SerializeField] private GameObject _cinemachine;
-    [SerializeField] private GameObject _skipButton;
 
     private void Awake()
     {
@@ -34,19 +32,14 @@ public class StageManager : MonoBehaviourPunCallbacks
         CurrentCheckPointIndex = 0;
         CurrentItemsCollected = 0;
         Instance = this;
-        //TODO: photonView 추가한 플레이어 오브젝트 프리팹화, Resources 폴더에 넣어서 Load 후 Instantiate
-        _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
-        _blackPlayer = GameObject.FindGameObjectWithTag("Black");
+
         
         UIItem = UIManager.Instance.OpenUI<UIItem>();
     }
     void Start()
     {
         UIItem.DelImage();
-        _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
-        _bluePlayer.SetActive(false);
-        _blackPlayer.SetActive(false);
-        Invoke("StartGame", 60f);
+        StartGame();
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
         OnGameRestart += () => SceneManager.LoadScene("GameScene");
@@ -79,12 +72,29 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void StartGame()
     {
-        _bluePlayer.SetActive(true);
-        _blackPlayer.SetActive(true);
-        _cinemachine.SetActive(false);
+        int idx = PhotonNetwork.LocalPlayer.ActorNumber;
+        GameObject prefab = Resources.Load<GameObject>("Player");
+        if (idx == 1)
+        {
+            prefab.tag = "Blue";
+            PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
+            _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
+        }
+        else
+        {
+            prefab.tag = "Black";
+            prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
+            PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            _blackPlayer = GameObject.FindGameObjectWithTag("Black");
+            _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+        }
+
         StartCoroutine(CheckJump(new WaitForSeconds(.05f)));
     }
+    //---------------------------------- 아래는 전부 서버용
 
+    [PunRPC]
     public void CallBlueDeathEvent()
     {
         _bluePlayer.SetActive(false);
@@ -97,6 +107,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         else OnBlueDeath?.Invoke();
     }
 
+    [PunRPC]
     public void CallBlackDeathEvent()
     {
         _blackPlayer.SetActive(false);
@@ -109,6 +120,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         else OnBlackDeath?.Invoke();
     }
 
+    [PunRPC]
     public void CallGameClearEvent()
     {
         Time.timeScale = 0f;
@@ -117,32 +129,46 @@ public class StageManager : MonoBehaviourPunCallbacks
         OnGameClear?.Invoke();
     }
 
-    public void SkipCutScene()
-    {
-        StartGame();
-        _skipButton.gameObject.SetActive(false);    
-    }
-
+    [PunRPC]
     public void SetCheckPoint(int index)
     {
         CurrentCheckPointIndex = index;
     }
 
+    [PunRPC]
     public void CollectItem()
     {
         CurrentItemsCollected++;
         UIItem.SetImage(_itemSprites[CurrentItemsCollected - 1]);
     }
 
+    [PunRPC]
     private void RespawnBlue()
     {
         _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
     }
 
+    [PunRPC]
     private void RespawnBlack()
     {
         _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _blackPlayer.gameObject.SetActive(true);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            if(_bluePlayer != null)
+                stream.SendNext(_bluePlayer);
+            if(_blackPlayer != null)
+                stream.SendNext(_blackPlayer);
+        }
+        else
+        {
+            _bluePlayer = (GameObject)stream.ReceiveNext();
+            _blackPlayer = (GameObject)stream.ReceiveNext();
+        }
     }
 }
