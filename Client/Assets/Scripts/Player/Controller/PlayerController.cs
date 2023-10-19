@@ -64,10 +64,10 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
 	{
 		Rigidbody = GetComponent<Rigidbody2D>();
-		Collider = GetComponent<CapsuleCollider2D>();
 		AnimHandler = GetComponent<PlayerAnimator>();
 
 		if (!photonView.IsMine) return;
+		Collider = GetComponent<CapsuleCollider2D>();
 		InputActions = new PlayerInputActions();
 		PlayerActions = InputActions.Player;
 	}

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
-
 public class StageManager : MonoBehaviourPun
 {
     public static StageManager Instance;
@@ -25,8 +24,7 @@ public class StageManager : MonoBehaviourPun
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
     [SerializeField] public Transform[] CheckPoints;
     [SerializeField] private Sprite[] _itemSprites;
-    [SerializeField] private float _respawnInterval = 3f; 
-
+    [SerializeField] private float _respawnInterval = 3f;
     private void Awake()
     {
         Time.timeScale = 1.0f;
@@ -44,54 +42,49 @@ public class StageManager : MonoBehaviourPun
         OnGameRestart += () => PhotonNetwork.LoadLevel("GameScene");
         OnGameEnd += () => PhotonNetwork.LoadLevel("StartScene");
     }
-    
-    
     private IEnumerator CheckJump(WaitForSeconds checkInterval)
     {
-        while(true)
+        while (true)
         {
             if (_playerRigidBody != null)
             {
                 if (_playerRigidBody.velocity.y > 0)
                 {
-                    foreach(var terrain in _terrainColliders)
+                    foreach (var terrain in _terrainColliders)
                     {
                         terrain.enabled = false;
                     }
                 }
                 else
                 {
-                    foreach(var terrain in _terrainColliders)
+                    foreach (var terrain in _terrainColliders)
                     { terrain.enabled = true; }
                 }
             }
             yield return checkInterval;
-
-        } 
+        }
     }
-
     private void StartGame()
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
         GameObject prefab = Resources.Load<GameObject>("Player");
         if (idx == 1)
         {
-            prefab.tag = "Blue";
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            _bluePlayer.tag = "Blue";
             photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
         else if (idx == 2)
         {
-            prefab.tag = "Black";
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
-            _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f/255f, 41f/255f, 46f / 255f, 1f);
+            _blackPlayer.tag = "Black";
+            _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f / 255f, 41f / 255f, 46f / 255f, 1f);
             photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
             _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
         photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
-
     [PunRPC]
     private void InvokeJumpCheck()
     {
@@ -118,7 +111,6 @@ public class StageManager : MonoBehaviourPun
         _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
     }
-
     [PunRPC]
     private void RespawnBlack()
     {
@@ -127,21 +119,18 @@ public class StageManager : MonoBehaviourPun
         _blackPlayer.gameObject.SetActive(true);
     }
     //---------------------------------- 아래는 전부 서버용
-
     [PunRPC]
     private void SetBluePlayer(GameObject blue)
     {
         this._bluePlayer = blue;
         RespawnBlue();
     }
-
     [PunRPC]
     private void SetBlackPlayer(GameObject black)
     {
         this._blackPlayer = black;
         RespawnBlack();
     }
-
     [PunRPC]
     public void CallBlueDeathEvent()
     {
@@ -155,7 +144,6 @@ public class StageManager : MonoBehaviourPun
         }
         //else OnBlueDeath?.Invoke();
     }
-
     [PunRPC]
     public void CallBlackDeathEvent()
     {
@@ -169,7 +157,6 @@ public class StageManager : MonoBehaviourPun
         }
         //else OnBlackDeath?.Invoke();
     }
-
     [PunRPC]
     public void CallGameClearEvent()
     {
@@ -178,13 +165,11 @@ public class StageManager : MonoBehaviourPun
         UIPopUp.SetPopup("게임 클리어!", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
         OnGameClear?.Invoke();
     }
-
     [PunRPC]
     public void SetCheckPoint(int index)
     {
         CurrentCheckPointIndex = index;
     }
-
     [PunRPC]
     public void CollectItem()
     {
