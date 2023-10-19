@@ -6,5 +6,5 @@ public class AccountLoginReq
 
 public class AccountLoginRes
 {
-
+    public int LoginOk;
 }

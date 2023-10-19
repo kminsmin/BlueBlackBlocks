@@ -18,6 +18,6 @@ namespace AccountServer.DB
 
     public class AccountLoginRes
     {
-
+        public int LoginOk { get; set; }
     }
 }
