@@ -78,12 +78,12 @@ namespace AccountServer.Controllers
                 string accountPassword = account.AccountPassword;
                 if (_passwordEncryptor.IsmatchPassword(reqPassword, accountPassword))
                 {
-                    // ToDo : Response 데이터 처리
-                    //res
+                    res.LoginOk = (int)Define.LoginResult.Success;
                     return res;
                 }
             }
 
+            res.LoginOk = (int)Define.LoginResult.Faile;
             return res;
         }
     }
