@@ -32,10 +32,12 @@ public class StageManager : MonoBehaviourPun
         CurrentItemsCollected = 0;
         Instance = this;
         UIItem = UIManager.Instance.OpenUI<UIItem>();
-        StartGame();
+        
     }
+
     void Start()
     {
+        Invoke("StartGame", 1f);
         UIItem.DelImage();
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
@@ -47,22 +49,21 @@ public class StageManager : MonoBehaviourPun
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
        
-        if (idx == 1)
-        {
-            GameObject prefab = Resources.Load<GameObject>("Player");
-            _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
-            photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
-            PlayerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
-        }
-        else if (idx == 2)
+        if (idx == 2)
         {
             GameObject prefab = Resources.Load<GameObject>("Player_Black");
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
-            photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
             PlayerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+        }
+        else if (idx == 1)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Player");
+            _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            PlayerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
 
     }
+
 
     [PunRPC]
     private void RespawnBlue()
@@ -77,16 +78,7 @@ public class StageManager : MonoBehaviourPun
         _blackPlayer.gameObject.SetActive(true);
     }
     //---------------------------------- 아래는 전부 서버용
-    [PunRPC]
-    private void SetBluePlayer(GameObject blue)
-    {
-        this._bluePlayer = blue;
-    }
-    [PunRPC]
-    private void SetBlackPlayer(GameObject black)
-    {
-        this._blackPlayer = black;
-    }
+
     [PunRPC]
     public void CallBlueDeathEvent()
     {
