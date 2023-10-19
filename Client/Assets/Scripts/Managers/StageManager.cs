@@ -79,16 +79,14 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         {
             prefab.tag = "Blue";
             prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
-            PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
-            _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
+            _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
         else
         {
             prefab.tag = "Black";
             prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
-            PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
-            _blackPlayer = GameObject.FindGameObjectWithTag("Black");
+            _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
             _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
 
