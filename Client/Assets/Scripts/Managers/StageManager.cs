@@ -20,7 +20,7 @@ public class StageManager : MonoBehaviourPun
     private GameObject _bluePlayer;
     private GameObject _blackPlayer;
     private Rigidbody2D _playerRigidBody;
-    private PhotonView _photonView;
+
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
     [SerializeField] public Transform[] CheckPoints;
     [SerializeField] private Sprite[] _itemSprites;
@@ -46,10 +46,13 @@ public class StageManager : MonoBehaviourPun
     {
         while (true)
         {
-            if (_playerRigidBody != null)
+            
+            try
             {
                 if (_playerRigidBody.velocity.y > 0)
                 {
+                    if (!photonView.IsMine)
+                    { continue; }
                     foreach (var terrain in _terrainColliders)
                     {
                         terrain.enabled = false;
@@ -61,6 +64,7 @@ public class StageManager : MonoBehaviourPun
                     { terrain.enabled = true; }
                 }
             }
+            catch { break; }
             yield return checkInterval;
         }
     }
@@ -72,24 +76,23 @@ public class StageManager : MonoBehaviourPun
         {
             GameObject prefab = Resources.Load<GameObject>("Player");
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
-            _bluePlayer.tag = "Blue";
             photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
         else if (idx == 2)
         {
-            prefab.tag = "Black";
+            GameObject prefab = Resources.Load<GameObject>("Player_Black");
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
-            _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f/255f, 41f/255f, 46f / 255f, 1f);
             photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
             _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
-        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
+        //photonView.RPC("InvokeJumpCheck", RpcTarget.All);
+        InvokeJumpCheck();
     }
     [PunRPC]
     private void InvokeJumpCheck()
     {
-        if (_playerRigidBody != null)
+        if (_playerRigidBody == null)
         {
             int idx = PhotonNetwork.LocalPlayer.ActorNumber;
             if (idx == 1)
@@ -100,7 +103,6 @@ public class StageManager : MonoBehaviourPun
             else if (idx == 2)
             {
                 _blackPlayer = GameObject.FindGameObjectWithTag("Black");
-                _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f / 255f, 41f / 255f, 46f / 255f, 1f);
                 _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
             }
         }
@@ -111,26 +113,25 @@ public class StageManager : MonoBehaviourPun
     {
         _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
+        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
     [PunRPC]
     private void RespawnBlack()
     {
         _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
-        _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f / 255f, 41f / 255f, 46f / 255f, 1f);
         _blackPlayer.gameObject.SetActive(true);
+        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
     //---------------------------------- 아래는 전부 서버용
     [PunRPC]
     private void SetBluePlayer(GameObject blue)
     {
         this._bluePlayer = blue;
-        RespawnBlue();
     }
     [PunRPC]
     private void SetBlackPlayer(GameObject black)
     {
         this._blackPlayer = black;
-        RespawnBlack();
     }
     [PunRPC]
     public void CallBlueDeathEvent()
