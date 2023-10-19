@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &352761229449113248
 SpriteRenderer:
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 77, g: 41, b: 46, a: 255}
   m_FlipX: 0
@@ -239,6 +239,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 401585731196657215}
+  - {fileID: -4100134153738973859}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -272,5 +273,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 1
+    Name: Jump
+  - Type: 9
+    SynchronizeType: 1
+    Name: Land
+  - Type: 1
+    SynchronizeType: 1
+    Name: Vel Y
+  - Type: 9
+    SynchronizeType: 1
+    Name: Wall
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
