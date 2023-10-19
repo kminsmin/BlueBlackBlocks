@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : MonoBehaviourPun
 {
     private PlayerController _controller;
     private Animator anim;
@@ -27,9 +26,11 @@ public class PlayerAnimator : MonoBehaviour
 
     private void LateUpdate()
     {
-        CheckAnimationState();
+        if (!photonView.IsMine) return;
+        photonView.RPC("CheckAnimationState", RpcTarget.All);
     }
-
+    
+    [PunRPC]
     private void CheckAnimationState()
     {
         anim.SetBool("Wall", isOnWall);
