@@ -32,10 +32,12 @@ public class StageManager : MonoBehaviourPun
         CurrentItemsCollected = 0;
         Instance = this;
         UIItem = UIManager.Instance.OpenUI<UIItem>();
-        StartGame();
+        
     }
+
     void Start()
     {
+        Invoke("StartGame", 1f);
         UIItem.DelImage();
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
@@ -52,7 +54,7 @@ public class StageManager : MonoBehaviourPun
                 if (_playerRigidBody.velocity.y > 0)
                 {
                     if (!photonView.IsMine)
-                    { continue; }
+                    { break; }
                     foreach (var terrain in _terrainColliders)
                     {
                         terrain.enabled = false;
@@ -72,7 +74,13 @@ public class StageManager : MonoBehaviourPun
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
        
-        if (idx == 1)
+        if (idx == 2)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Player_Black");
+            _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
+            _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+        }
+        else if (idx == 1)
         {
             GameObject prefab = Resources.Load<GameObject>("Player");
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
@@ -123,16 +131,7 @@ public class StageManager : MonoBehaviourPun
         photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
     //---------------------------------- 아래는 전부 서버용
-    [PunRPC]
-    private void SetBluePlayer(GameObject blue)
-    {
-        this._bluePlayer = blue;
-    }
-    [PunRPC]
-    private void SetBlackPlayer(GameObject black)
-    {
-        this._blackPlayer = black;
-    }
+
     [PunRPC]
     public void CallBlueDeathEvent()
     {
