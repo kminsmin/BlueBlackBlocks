@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Photon.Pun;
-
 public class FallingPlatform : MonoBehaviourPun, IPunObservable
 {
     private Transform _transform;
@@ -12,7 +11,6 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
     private Rigidbody2D _rigidbody;
     private bool _isColliding;
     [SerializeField] private float _fallSpeed = 1.5f;
-
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -23,24 +21,30 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
         _fall = new Vector3(0, -1, 0) * _fallSpeed * Time.deltaTime;
         _initialPos = _transform.position;
     }
-
+    private void Update()
+    {
+        if (!_isColliding)
+        {
+            _transform.DOLocalMoveY(_initialPos.y, 1f);
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(_fall == Vector3.zero)
+        if (_fall == Vector3.zero)
         {
             _fall = new Vector3(0, -1, 0) * _fallSpeed * Time.deltaTime;
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision != null)
+        if (collision != null)
         {
-            if(collision.gameObject.CompareTag("Blue")||collision.gameObject.CompareTag("Black"))
+            if (collision.gameObject.CompareTag("Blue") || collision.gameObject.CompareTag("Black"))
             {
                 _isColliding = true;
                 _transform.Translate(_fall);
             }
-         }
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -50,14 +54,8 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
             {
                 _isColliding = false;
             }
-            if (!_isColliding)
-            {
-                _transform.DOLocalMoveY(_initialPos.y, 1f);
-            }
-
         }
     }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
