@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Photon.Pun;
-public class FallingPlatform : MonoBehaviourPun, IPunObservable
+public class FallingPlatform : MonoBehaviourPun
 {
     private Transform _transform;
     private Vector3 _fall = Vector3.zero;
     private Vector3 _initialPos = Vector3.zero;
-    private Rigidbody2D _rigidbody;
     private bool _isColliding;
     [SerializeField] private float _fallSpeed = 1.5f;
     private void Awake()
     {
         _transform = GetComponent<Transform>();
-        _rigidbody = GetComponent<Rigidbody2D>();
     }
     private void Start()
     {
@@ -54,19 +52,6 @@ public class FallingPlatform : MonoBehaviourPun, IPunObservable
             {
                 _isColliding = false;
             }
-        }
-    }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(_rigidbody.position);
-            stream.SendNext(_rigidbody.velocity);
-        }
-        else
-        {
-            _rigidbody.position = (Vector2)stream.ReceiveNext();
-            _rigidbody.velocity = (Vector2)stream.ReceiveNext();
         }
     }
 }

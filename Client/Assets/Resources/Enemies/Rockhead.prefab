@@ -155,10 +155,8 @@ GameObject:
   - component: {fileID: 6301689074440003900}
   - component: {fileID: 8261670624721700630}
   - component: {fileID: 3360360265450318962}
-  - component: {fileID: 8038884022414272518}
   - component: {fileID: 4289285456743475693}
   - component: {fileID: 4721438777961284572}
-  - component: {fileID: 3096770853522574044}
   m_Layer: 0
   m_Name: Rockhead
   m_TagString: Untagged
@@ -240,33 +238,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetY: 9.5
---- !u!50 &8038884022414272518
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6248079368237465266}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 5
 --- !u!114 &4289285456743475693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,7 +259,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 3360360265450318962}
   - {fileID: 4721438777961284572}
-  - {fileID: 3096770853522574044}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -308,19 +278,3 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &3096770853522574044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6248079368237465266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
