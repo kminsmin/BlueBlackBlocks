@@ -1221,22 +1221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &25231635180965879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941324979741588377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &66192215815868205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1661,9 +1645,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 288847740344969561}
   - {fileID: 7720787329409631991}
-  - {fileID: 25231635180965879}
   sceneViewId: 4
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -9138,33 +9120,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &4985360319288159533
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941324979741588377}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 5
 --- !u!4 &5066556322392058254
 Transform:
   m_ObjectHideFlags: 0
@@ -29912,14 +29867,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4289285456743475693, guid: 70139c38b6fe01b4887fe258660e4516, type: 3}
-      propertyPath: ObservedComponents.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289285456743475693, guid: 70139c38b6fe01b4887fe258660e4516, type: 3}
-      propertyPath: ObservedComponents.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6248079368237465266, guid: 70139c38b6fe01b4887fe258660e4516, type: 3}
       propertyPath: m_Name
       value: Rockhead
@@ -29968,9 +29915,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3096770853522574044, guid: 70139c38b6fe01b4887fe258660e4516, type: 3}
-    - {fileID: 8038884022414272518, guid: 70139c38b6fe01b4887fe258660e4516, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -30001,10 +29946,8 @@ GameObject:
   - component: {fileID: 9066956017347830807}
   - component: {fileID: 6343052962465464893}
   - component: {fileID: 288847740344969561}
-  - component: {fileID: 4985360319288159533}
   - component: {fileID: 1235902486747737286}
   - component: {fileID: 7720787329409631991}
-  - component: {fileID: 25231635180965879}
   m_Layer: 0
   m_Name: Rockhead (1)
   m_TagString: Untagged
