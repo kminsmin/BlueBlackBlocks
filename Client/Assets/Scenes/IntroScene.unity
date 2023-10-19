@@ -7108,7 +7108,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6917644500566396482}
         m_TargetAssemblyTypeName: SkipButton, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: InvokeChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10260,10 +10260,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 0}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0

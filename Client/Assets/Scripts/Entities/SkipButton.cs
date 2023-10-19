@@ -5,25 +5,31 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class SkipButton : MonoBehaviour
+public class SkipButton : MonoBehaviourPunCallbacks
 {
-    [SerializeField] PlayableDirector _director;
+    [SerializeField] private PlayableDirector _director;
 
     private void Start()
     {
-        _director.stopped += ChangeScene;
-        if(!PhotonNetwork.IsMasterClient)
-        {
-            gameObject.SetActive(false);
-        }
+        _director.stopped += InvokeChangeScene;
     }
-    public void ChangeScene(PlayableDirector director)
+    public void InvokeChangeScene(PlayableDirector director)
     {
-        PhotonNetwork.LoadLevel("GameScene");
+        Invoke("ChangeScene", 0.5f);
     }
 
     public void ChangeScene()
     {
+        _director.Stop();
+        
         PhotonNetwork.LoadLevel("GameScene");
+    }
+    public void InvokeChangeScene()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+        Invoke("ChangeScene", 0.5f);
     }
 }
