@@ -6,11 +6,11 @@
 	Feel free to use this in your own games, and I'd love to see anything you make!
  */
 
-using System.Drawing;
+using Photon.Pun;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPun
 {
 	//Scriptable object which holds all the player's movement parameters. If you don't want to use it
 	//just paste in all the parameters, though you will need to manuly change all references in this script
@@ -66,13 +66,15 @@ public class PlayerController : MonoBehaviour
 		Rigidbody = GetComponent<Rigidbody2D>();
 		Collider = GetComponent<CapsuleCollider2D>();
 		AnimHandler = GetComponent<PlayerAnimator>();
-		
+
+		if (!photonView.IsMine) return;
 		InputActions = new PlayerInputActions();
 		PlayerActions = InputActions.Player;
 	}
 
 	private void Start()
 	{
+		if (!photonView.IsMine) return;
 		PlayerActions.Move.started += (context) =>
 		{
 			_moveInput = context.ReadValue<Vector2>();
@@ -97,6 +99,8 @@ public class PlayerController : MonoBehaviour
 	
 	private void Update()
 	{
+		if (!photonView.IsMine) return;
+		
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -241,6 +245,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
 	{
+		if (!photonView.IsMine) return;
+		
 		//Handle Run
 		if (IsWallJumping)
 			Run(Data.wallJumpRunLerp);
