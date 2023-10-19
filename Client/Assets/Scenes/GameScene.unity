@@ -4996,6 +4996,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 898740060755763979, guid: f3f87dfa78a7e96498be2f9b6c3128ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 898740060755763979, guid: f3f87dfa78a7e96498be2f9b6c3128ec, type: 3}
       propertyPath: m_TagString
       value: Blue
       objectReference: {fileID: 0}
@@ -12822,7 +12826,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1552128289
 Transform:
   m_ObjectHideFlags: 0
@@ -31131,7 +31135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!70 &2003074368
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
