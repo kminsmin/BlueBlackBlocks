@@ -73,19 +73,18 @@ public class StageManager : MonoBehaviourPun
     private void StartGame()
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
-        GameObject prefab = Resources.Load<GameObject>("Player");
+       
         if (idx == 1)
         {
-            prefab.tag = "Blue";
+            GameObject prefab = Resources.Load<GameObject>("Player");
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
             photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
         else if (idx == 2)
         {
-            prefab.tag = "Black";
+            GameObject prefab = Resources.Load<GameObject>("Player_2");
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
-            _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f/255f, 41f/255f, 46f / 255f, 1f);
             photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
             _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
