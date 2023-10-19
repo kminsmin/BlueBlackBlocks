@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
-public class StageManager : MonoBehaviourPun, IPunObservable
+public class StageManager : MonoBehaviourPun
 {
     public static StageManager Instance;
     public event Action OnBlueDeath;
@@ -21,6 +21,7 @@ public class StageManager : MonoBehaviourPun, IPunObservable
     private GameObject _bluePlayer;
     private GameObject _blackPlayer;
     private Rigidbody2D _playerRigidBody;
+    private PhotonView _photonView;
     [SerializeField] private TilemapCollider2D[] _terrainColliders;
     [SerializeField] public Transform[] CheckPoints;
     [SerializeField] private Sprite[] _itemSprites;
@@ -32,20 +33,19 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         CurrentCheckPointIndex = 0;
         CurrentItemsCollected = 0;
         Instance = this;
-
-        
         UIItem = UIManager.Instance.OpenUI<UIItem>();
+        StartGame();
     }
     void Start()
     {
         UIItem.DelImage();
-        photonView.RPC("StartGame", RpcTarget.All);
         OnBlueDeath += () => Invoke("RespawnBlue", _respawnInterval);
         OnBlackDeath += () => Invoke("RespawnBlack", _respawnInterval);
         OnGameRestart += () => PhotonNetwork.LoadLevel("GameScene");
         OnGameEnd += () => PhotonNetwork.LoadLevel("StartScene");
     }
-
+    
+    
     private IEnumerator CheckJump(WaitForSeconds checkInterval)
     {
         while(true)
@@ -70,67 +70,103 @@ public class StageManager : MonoBehaviourPun, IPunObservable
         } 
     }
 
-    [PunRPC]
     private void StartGame()
     {
         int idx = PhotonNetwork.LocalPlayer.ActorNumber;
-        GameObject prefab = Resources.Load<GameObject>("Player");
+       
         if (idx == 1)
         {
-            prefab.tag = "Blue";
-            prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
+            GameObject prefab = Resources.Load<GameObject>("Player");
             _bluePlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            photonView.RPC("SetBluePlayer", RpcTarget.All, _bluePlayer);
             _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
         }
-        else
+        else if (idx == 2)
         {
-            prefab.tag = "Black";
-            prefab.GetComponent<SpriteRenderer>().color = new Color(77, 41, 46, 255);
-            _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-3.63f, 0.46f, 0), Quaternion.identity);
+            GameObject prefab = Resources.Load<GameObject>("Player_2");
+            _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
+            photonView.RPC("SetBlackPlayer", RpcTarget.All, _blackPlayer);
             _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
-
-        StartCoroutine(CheckJump(new WaitForSeconds(.05f)));
+        photonView.RPC("InvokeJumpCheck", RpcTarget.All);
     }
 
+    [PunRPC]
+    private void InvokeJumpCheck()
+    {
+        if (_playerRigidBody != null)
+        {
+            int idx = PhotonNetwork.LocalPlayer.ActorNumber;
+            if (idx == 1)
+            {
+                _bluePlayer = GameObject.FindGameObjectWithTag("Blue");
+                _playerRigidBody = _bluePlayer.GetComponent<Rigidbody2D>();
+            }
+            else if (idx == 2)
+            {
+                _blackPlayer = GameObject.FindGameObjectWithTag("Black");
+                _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f / 255f, 41f / 255f, 46f / 255f, 1f);
+                _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+            }
+        }
+        StartCoroutine(CheckJump(new WaitForSeconds(.05f)));
+    }
+    [PunRPC]
     private void RespawnBlue()
     {
         _bluePlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
         _bluePlayer.gameObject.SetActive(true);
     }
 
-
+    [PunRPC]
     private void RespawnBlack()
     {
         _blackPlayer.transform.position = CheckPoints[CurrentCheckPointIndex].position;
+        _blackPlayer.GetComponent<SpriteRenderer>().color = new Color(77f / 255f, 41f / 255f, 46f / 255f, 1f);
         _blackPlayer.gameObject.SetActive(true);
     }
     //---------------------------------- 아래는 전부 서버용
 
     [PunRPC]
+    private void SetBluePlayer(GameObject blue)
+    {
+        this._bluePlayer = blue;
+        RespawnBlue();
+    }
+
+    [PunRPC]
+    private void SetBlackPlayer(GameObject black)
+    {
+        this._blackPlayer = black;
+        RespawnBlack();
+    }
+
+    [PunRPC]
     public void CallBlueDeathEvent()
     {
-        _bluePlayer.SetActive(false);
+        photonView.RPC("RespawnBlue", RpcTarget.All);
+        //_bluePlayer.SetActive(false);
         if (!_blackPlayer.activeSelf)
         {
             Time.timeScale = 0f;
             UIPopUp = UIManager.Instance.OpenUI<UIPopUp>();
             UIPopUp.SetPopup("게임 오버", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
         }
-        else OnBlueDeath?.Invoke();
+        //else OnBlueDeath?.Invoke();
     }
 
     [PunRPC]
     public void CallBlackDeathEvent()
     {
-        _blackPlayer.SetActive(false);
+        photonView.RPC("RespawnBlack", RpcTarget.All);
+        //_blackPlayer.SetActive(false);
         if (!_bluePlayer.activeSelf)
         {
             Time.timeScale = 0f;
             UIPopUp = UIManager.Instance.OpenUI<UIPopUp>();
             UIPopUp.SetPopup("게임 오버", "다시 하시겠습니까?", OnGameRestart, OnGameEnd);
         }
-        else OnBlackDeath?.Invoke();
+        //else OnBlackDeath?.Invoke();
     }
 
     [PunRPC]
@@ -153,20 +189,5 @@ public class StageManager : MonoBehaviourPun, IPunObservable
     {
         CurrentItemsCollected++;
         UIItem.SetImage(_itemSprites[CurrentItemsCollected - 1]);
-    }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            if(_bluePlayer != null)
-                stream.SendNext(_bluePlayer);
-            if(_blackPlayer != null)
-                stream.SendNext(_blackPlayer);
-        }
-        else
-        {
-            _bluePlayer = (GameObject)stream.ReceiveNext();
-            _blackPlayer = (GameObject)stream.ReceiveNext();
-        }
     }
 }
