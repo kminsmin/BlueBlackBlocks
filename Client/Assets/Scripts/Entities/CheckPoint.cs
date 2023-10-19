@@ -14,13 +14,13 @@ public class CheckPoint : MonoBehaviourPun
             {
                 if(_index > StageManager.Instance.CurrentCheckPointIndex)
                 {
-                    StageManager.Instance.SetCheckPoint(_index);
+                    StageManager.Instance.photonView.RPC("SetCheckPoint", RpcTarget.All, _index);
                     gameObject.GetComponent<Animator>().SetBool("isOn", true);
                 }
 
                 if(_index ==  StageManager.Instance.CheckPoints.Length - 1&& StageManager.Instance.CurrentItemsCollected == 3)
                 {
-                    StageManager.Instance.CallGameClearEvent();
+                    StageManager.Instance.photonView.RPC("CallGameClearEvent", RpcTarget.All);
                 }
             }
         }

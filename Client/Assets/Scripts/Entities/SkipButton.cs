@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,14 +12,18 @@ public class SkipButton : MonoBehaviour
     private void Start()
     {
         _director.stopped += ChangeScene;
+        if(!PhotonNetwork.IsMasterClient)
+        {
+            gameObject.SetActive(false);
+        }
     }
     public void ChangeScene(PlayableDirector director)
     {
-        SceneManager.LoadScene("GameScene");
+        PhotonNetwork.LoadLevel("GameScene");
     }
 
     public void ChangeScene()
     {
-        SceneManager.LoadScene("GameScene");
+        PhotonNetwork.LoadLevel("GameScene");
     }
 }
