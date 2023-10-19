@@ -54,7 +54,7 @@ public class StageManager : MonoBehaviourPun
                 if (_playerRigidBody.velocity.y > 0)
                 {
                     if (!photonView.IsMine)
-                    { continue; }
+                    { break; }
                     foreach (var terrain in _terrainColliders)
                     {
                         terrain.enabled = false;
@@ -78,7 +78,7 @@ public class StageManager : MonoBehaviourPun
         {
             GameObject prefab = Resources.Load<GameObject>("Player_Black");
             _blackPlayer = PhotonNetwork.Instantiate(prefab.name, new Vector3(-7.63f, 0.46f, 0), Quaternion.identity);
-            PlayerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
+            _playerRigidBody = _blackPlayer.GetComponent<Rigidbody2D>();
         }
         else if (idx == 1)
         {
