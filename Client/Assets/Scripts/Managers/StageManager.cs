@@ -53,8 +53,6 @@ public class StageManager : MonoBehaviourPun
             {
                 if (_playerRigidBody.velocity.y > 0)
                 {
-                    if (!photonView.IsMine)
-                    { break; }
                     foreach (var terrain in _terrainColliders)
                     {
                         terrain.enabled = false;
